@@ -10,14 +10,32 @@ type Network struct {
 
 // mux, echo, gin
 func NewNetwork() *Network {
-	var r = &Network{
+	var n = &Network{
 		//engin: gin.Default(),
 		engin: gin.New(),
 	}
 
-	return r
+	NewUserRouter(n)
+
+	return n
 }
 
 func (n *Network) ServerStart(port string) error {
 	return n.engin.Run(port)
+}
+
+func (n *Network) create(path string, h ...gin.HandlerFunc) {
+	n.engin.POST(path, h...)
+}
+
+func (n *Network) get(path string, h ...gin.HandlerFunc) {
+	n.engin.GET(path, h...)
+}
+
+func (n *Network) update(path string, h ...gin.HandlerFunc) {
+	n.engin.PUT(path, h...)
+}
+
+func (n *Network) delete(path string, h ...gin.HandlerFunc) {
+	n.engin.DELETE(path, h...)
 }
